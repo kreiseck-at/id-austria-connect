@@ -18,4 +18,10 @@ describe('createPkce', () => {
     const expected = crypto.createHash('sha256').update(codeVerifier).digest('base64url');
     expect(codeChallenge).toBe(expected);
   });
+
+  test('codeVerifier ist nicht leer und base64url', () => {
+    const { codeVerifier } = createPkce();
+    expect(codeVerifier.length).toBeGreaterThan(0);
+    expect(codeVerifier).toMatch(/^[A-Za-z0-9_-]+$/);
+  });
 });

@@ -5,7 +5,7 @@ function randomToken(bytes = 32) {
 }
 
 function createPkce() {
-  const codeVerifier = randomToken(32);
+  const codeVerifier = randomToken();
   const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('base64url');
   return { codeVerifier, codeChallenge };
 }

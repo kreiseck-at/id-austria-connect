@@ -1,5 +1,5 @@
 const { createIdAustria } = require('../src/index');
-const { IdaConfigError } = require('../src/errors');
+const { IdaConfigError, IdaUserCancelledError } = require('../src/errors');
 
 const baseConfig = {
   environment: 'test',
@@ -42,4 +42,13 @@ test('buildAuthorizeUrl reicht an den Kern durch', async () => {
   expect(url).toContain('response_type=code');
   expect(state).toBeTruthy();
   expect(codeVerifier).toBeTruthy();
+});
+
+test('handleCallback reicht an den Kern durch: error=access_denied -> IdaUserCancelledError, ohne Netzwerk', async () => {
+  const fetchImpl = jest.fn();
+  const ida = createIdAustria(baseConfig);
+  await expect(ida.handleCallback({
+    error: 'access_denied', state: 's-1', expectedState: 's-1',
+  }, { fetchImpl })).rejects.toThrow(IdaUserCancelledError);
+  expect(fetchImpl).not.toHaveBeenCalled();
 });
