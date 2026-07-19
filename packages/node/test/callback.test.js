@@ -38,15 +38,6 @@ async function signIdToken(overrides = {}) {
     .sign(keyPair.privateKey);
 }
 
-function deps(idToken) {
-  return {
-    fetchImpl: jest.fn().mockResolvedValue({ ok: true, json: async () => DOC })
-      // erster Aufruf: Discovery; Token-Endpoint wird separat gemockt:
-      ,
-    getKeySet: () => async () => keyPair.publicKey,
-  };
-}
-
 function depsWithToken(idToken, docOnly = DOC) {
   const fetchImpl = jest.fn()
     .mockResolvedValueOnce({ ok: true, json: async () => docOnly })      // Discovery
@@ -88,5 +79,24 @@ test('falsche audience -> IdaTokenError', async () => {
     .setIssuer(ISSUER).setAudience('https://fremd.example').setIssuedAt()
     .setExpirationTime('5m').sign(keyPair.privateKey);
   await expect(exchangeAndVerify(config, goodInput, depsWithToken(idToken)))
+    .rejects.toThrow(IdaTokenError);
+});
+
+test('falscher issuer -> IdaTokenError (gegen gepinnten Issuer geprueft, nicht gegen doc.issuer)', async () => {
+  const idToken = await new jose.SignJWT({ 'urn:pvpgvat:oidc.bpk': 'x', nonce: 'n-1' })
+    .setProtectedHeader({ alg: 'RS256' })
+    .setIssuer('https://boese.example').setAudience(config.clientId).setIssuedAt()
+    .setExpirationTime('5m').sign(keyPair.privateKey);
+  await expect(exchangeAndVerify(config, goodInput, depsWithToken(idToken)))
+    .rejects.toThrow(IdaTokenError);
+});
+
+test('fehlt im Discovery-Doc das issuer-Feld, greift trotzdem der gepinnte Issuer', async () => {
+  const { issuer, ...docOhneIssuer } = DOC;
+  const idToken = await new jose.SignJWT({ 'urn:pvpgvat:oidc.bpk': 'x', nonce: 'n-1' })
+    .setProtectedHeader({ alg: 'RS256' })
+    .setIssuer('https://boese.example').setAudience(config.clientId).setIssuedAt()
+    .setExpirationTime('5m').sign(keyPair.privateKey);
+  await expect(exchangeAndVerify(config, goodInput, depsWithToken(idToken, docOhneIssuer)))
     .rejects.toThrow(IdaTokenError);
 });

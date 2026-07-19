@@ -1,6 +1,6 @@
 class IdaError extends Error {
-  constructor(message, code) {
-    super(message);
+  constructor(message, code, options) {
+    super(message, options && 'cause' in options ? { cause: options.cause } : undefined);
     this.name = this.constructor.name;
     this.code = code;
   }
@@ -15,7 +15,7 @@ class IdaUserCancelledError extends IdaError {
   constructor(message = 'Anmeldung vom Nutzer abgebrochen') { super(message, 'user_cancelled'); }
 }
 class IdaTokenError extends IdaError {
-  constructor(message) { super(message, 'token'); }
+  constructor(message, options) { super(message, 'token', options); }
 }
 
 module.exports = {

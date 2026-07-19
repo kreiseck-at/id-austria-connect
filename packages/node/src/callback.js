@@ -1,5 +1,5 @@
 const jose = require('jose');
-const { loadDiscovery } = require('./discovery');
+const { loadDiscovery, ISSUERS } = require('./discovery');
 const { normalizeProfile } = require('./profile');
 const {
   IdaStateMismatchError, IdaUserCancelledError, IdaTokenError,
@@ -46,14 +46,17 @@ async function exchangeAndVerify(config, input, deps = {}) {
     ? deps.getKeySet(doc)
     : jose.createRemoteJWKSet(new URL(doc.jwks_uri));
 
+  // Issuer gegen die fest hinterlegte Umgebungs-URL pruefen, NICHT gegen doc.issuer:
+  // ein manipuliertes oder unvollstaendiges Discovery-Dokument (z. B. ohne issuer-Feld)
+  // darf die iss-Pruefung nicht aushebeln koennen.
   let payload;
   try {
     ({ payload } = await jose.jwtVerify(tokenResponse.id_token, getKeySet, {
-      issuer: doc.issuer,
+      issuer: ISSUERS[config.environment],
       audience: config.clientId,
     }));
   } catch (err) {
-    throw new IdaTokenError(`id_token-Pruefung fehlgeschlagen: ${err.message}`);
+    throw new IdaTokenError(`id_token-Pruefung fehlgeschlagen: ${err.message}`, { cause: err });
   }
 
   if (payload.nonce !== nonce) {
