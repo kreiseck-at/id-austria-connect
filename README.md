@@ -53,11 +53,15 @@ Austria voraus: `client_id`, `client_secret`, `redirect_uri` sowie die
 Akkreditierung der benötigten Attribute (u. a. bPK). Für die
 Referenzumgebung (`environment: 'test'`) reicht eine Test-SP-Registrierung;
 für den produktiven Einsatz ist die reguläre Akkreditierung als
-privatwirtschaftlicher Service Provider nötig. Details dazu und die
-verifizierten Endpoints stehen in [`docs/design.md`](docs/design.md).
+privatwirtschaftlicher Service Provider nötig.
+
+**Schritt-für-Schritt-Anleitung (USP, Feld-für-Feld, mit Zuordnung zur
+Paket-Konfiguration):** [`packages/node/REGISTRIERUNG.md`](packages/node/REGISTRIERUNG.md).
 
 ## Weiterführende Doku
 
+- [`packages/node/REGISTRIERUNG.md`](packages/node/REGISTRIERUNG.md) — SP im USP
+  anlegen & akkreditieren, Feld → Config-Zuordnung, Projekt-Checkliste.
 - [`docs/design.md`](docs/design.md) — Design, Architektur, verifizierte
   Endpoints, Sicherheitsprüfungen, offene Punkte.
 - [`examples/firebase-functions`](examples/firebase-functions) — lauffähiges

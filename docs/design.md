@@ -154,5 +154,6 @@ sobald eine Test-SP-Registrierung vorliegt.
 
 - **Nicht im Code lösbar:** SP-Registrierung und Akkreditierung als privatwirtschaftlicher
   Service Provider. Test-SP zuerst, damit gegen die Referenzumgebung entwickelt werden
-  kann, bevor die Produktiv-Akkreditierung steht.
+  kann, bevor die Produktiv-Akkreditierung steht. Schritt-für-Schritt-Anleitung dazu:
+  [`../packages/node/REGISTRIERUNG.md`](../packages/node/REGISTRIERUNG.md).
 - Flutter-/Web-Adapter: eigene Ausbaustufe nach dem Node-Kern.

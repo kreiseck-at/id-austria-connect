@@ -13,6 +13,9 @@ genügt zum Entwickeln). Daraus stammen `client_id`, `client_secret` und die
 exakte `redirect_uri`; sie sind hier bewusst als Platzhalter/Umgebungs­variablen
 gehalten, keine echten Werte.
 
+Wie man den SP im USP anlegt und akkreditiert (Feld für Feld), steht in
+[`../../packages/node/REGISTRIERUNG.md`](../../packages/node/REGISTRIERUNG.md).
+
 ## Umgebungsvariablen
 
 | Variable | Bedeutung |
