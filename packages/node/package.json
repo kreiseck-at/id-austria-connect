@@ -1,0 +1,11 @@
+{
+  "name": "@kreiseck/id-austria",
+  "version": "0.1.0",
+  "description": "ID Austria (OpenID Connect) Login fuer Node — Drittanbieter-Client",
+  "license": "MIT",
+  "main": "src/index.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "jest" },
+  "dependencies": { "jose": "^5.9.6" },
+  "devDependencies": { "jest": "^29.7.0" }
+}
