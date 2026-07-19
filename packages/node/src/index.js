@@ -1,4 +1,6 @@
 const { IdaConfigError } = require('./errors');
+const { buildAuthorizeUrl } = require('./authorize');
+const { exchangeAndVerify } = require('./callback');
 
 const VALID_ENVIRONMENTS = ['test', 'production'];
 
@@ -12,12 +14,14 @@ function createIdAustria(config = {}) {
       throw new IdaConfigError(`Pflichtfeld fehlt oder ungueltig: ${key}`);
     }
   }
-  const scopes = config.scopes || ['openid', 'profile'];
+  const bound = {
+    environment, clientId, clientSecret, redirectUri,
+    scopes: config.scopes || ['openid', 'profile'],
+  };
 
   return {
-    buildAuthorizeUrl: async () => { throw new Error('noch nicht implementiert'); },
-    handleCallback: async () => { throw new Error('noch nicht implementiert'); },
-    _config: { environment, clientId, clientSecret, redirectUri, scopes },
+    buildAuthorizeUrl: (deps = {}) => buildAuthorizeUrl(bound, deps),
+    handleCallback: (input, deps = {}) => exchangeAndVerify(bound, input, deps),
   };
 }
 

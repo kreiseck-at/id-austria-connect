@@ -25,3 +25,21 @@ describe('createIdAustria — Konfiguration', () => {
       .toThrow(IdaConfigError);
   });
 });
+
+const { _clearCache } = require('../src/discovery');
+
+const DOC = {
+  authorization_endpoint: 'https://idp.ref.id-austria.gv.at/auth/idp/profile/oidc/authorize',
+  token_endpoint: 'https://idp.ref.id-austria.gv.at/auth/idp/profile/oidc/token',
+  jwks_uri: 'https://idp.ref.id-austria.gv.at/auth/idp/profile/oidc/keyset',
+};
+
+test('buildAuthorizeUrl reicht an den Kern durch', async () => {
+  _clearCache();
+  const fetchImpl = jest.fn().mockResolvedValue({ ok: true, json: async () => DOC });
+  const ida = createIdAustria(baseConfig);
+  const { url, state, codeVerifier } = await ida.buildAuthorizeUrl({ fetchImpl });
+  expect(url).toContain('response_type=code');
+  expect(state).toBeTruthy();
+  expect(codeVerifier).toBeTruthy();
+});
