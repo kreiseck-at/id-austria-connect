@@ -1,4 +1,4 @@
-const { IdaTokenError } = require('./errors');
+const { IdaTokenError, IdaConfigError } = require('./errors');
 
 const ISSUERS = {
   test: 'https://idp.ref.id-austria.gv.at',
@@ -9,6 +9,9 @@ const cache = new Map();
 
 async function loadDiscovery(environment, { fetchImpl = fetch } = {}) {
   const issuer = ISSUERS[environment];
+  if (!issuer) {
+    throw new IdaConfigError(`unbekannte environment: ${environment}`);
+  }
   if (cache.has(issuer)) return cache.get(issuer);
 
   const url = `${issuer}/.well-known/openid-configuration`;

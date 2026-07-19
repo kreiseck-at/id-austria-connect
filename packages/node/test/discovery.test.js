@@ -1,5 +1,5 @@
 const { ISSUERS, loadDiscovery, _clearCache } = require('../src/discovery');
-const { IdaTokenError } = require('../src/errors');
+const { IdaTokenError, IdaConfigError } = require('../src/errors');
 
 const DOC = {
   issuer: 'https://idp.ref.id-austria.gv.at',
@@ -33,4 +33,10 @@ test('cacht je Issuer (zweiter Aufruf ohne fetch)', async () => {
 test('wirft IdaTokenError bei HTTP-Fehler', async () => {
   const fetchImpl = jest.fn().mockResolvedValue({ ok: false, status: 503 });
   await expect(loadDiscovery('test', { fetchImpl })).rejects.toThrow(IdaTokenError);
+});
+
+test('wirft IdaConfigError bei unbekannter environment, ohne zu fetchen', async () => {
+  const fetchImpl = jest.fn();
+  await expect(loadDiscovery('foo', { fetchImpl })).rejects.toThrow(IdaConfigError);
+  expect(fetchImpl).not.toHaveBeenCalled();
 });
