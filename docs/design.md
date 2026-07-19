@@ -88,8 +88,8 @@ const { url, state, nonce, codeVerifier } = await ida.buildAuthorizeUrl();
 // url → dorthin weiterleiten
 // state/nonce/codeVerifier → kurzlebig speichern (Konsument, s. u.)
 
-// 2) Rückkehr verarbeiten
-const profile = await ida.handleCallback({ code, state, nonce, codeVerifier });
+// 2) Rückkehr verarbeiten (expectedState = der gespeicherte state)
+const profile = await ida.handleCallback({ code, state, expectedState, nonce, codeVerifier });
 // profile → { bpk, firstName, lastName, birthdate, qaaLevel, raw }
 ```
 
