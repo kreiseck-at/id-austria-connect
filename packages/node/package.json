@@ -3,9 +3,39 @@
   "version": "0.1.0",
   "description": "ID Austria (OpenID Connect) Login fuer Node — Drittanbieter-Client",
   "license": "MIT",
+  "author": "Kreiseck",
+  "homepage": "https://github.com/kreiseck-at/id-austria-connect#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kreiseck-at/id-austria-connect.git",
+    "directory": "packages/node"
+  },
+  "bugs": {
+    "url": "https://github.com/kreiseck-at/id-austria-connect/issues"
+  },
+  "keywords": [
+    "id-austria",
+    "id austria",
+    "oidc",
+    "openid-connect",
+    "openid",
+    "eid",
+    "eidas",
+    "austria",
+    "authentication",
+    "login",
+    "bpk"
+  ],
   "main": "src/index.js",
   "engines": { "node": ">=20" },
-  "scripts": { "test": "jest" },
+  "files": [
+    "src",
+    "REGISTRIERUNG.md"
+  ],
+  "scripts": {
+    "test": "jest",
+    "prepublishOnly": "jest"
+  },
   "dependencies": { "jose": "^5.9.6" },
   "devDependencies": { "jest": "^29.7.0" }
 }

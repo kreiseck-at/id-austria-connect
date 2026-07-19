@@ -4,6 +4,8 @@ Wiederverwendbare Anbindung an **ID Austria** (OpenID Connect) für eigene
 Projekte — Login mit ID Austria einmal sauber kapseln und in mehreren
 Anwendungen mit minimalem projektspezifischem Aufwand einsetzen.
 
+Von **[Kreiseck](https://github.com/kreiseck-at)** · Lizenz: MIT.
+
 Architektur: dünner Client, dicker Server. `@kreiseck/id-austria`
 (`packages/node`) ist der framework-agnostische Server-Kern — hält das
 `client_secret`, baut die Authorize-URL, tauscht den Code gegen das
@@ -66,3 +68,7 @@ Paket-Konfiguration):** [`packages/node/REGISTRIERUNG.md`](packages/node/REGISTR
   Endpoints, Sicherheitsprüfungen, offene Punkte.
 - [`examples/firebase-functions`](examples/firebase-functions) — lauffähiges
   Referenzbeispiel mit zwei HTTPS-Functions.
+
+## Lizenz
+
+MIT © Kreiseck — siehe [`LICENSE`](LICENSE).
