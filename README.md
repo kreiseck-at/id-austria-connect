@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/kreiseck-at/id-austria-connect/main/assets/kreiseck_logo.png" alt="Kreiseck" width="280">
+
 # id-austria-connect
 
 Wiederverwendbare Anbindung an **ID Austria** (OpenID Connect) für eigene

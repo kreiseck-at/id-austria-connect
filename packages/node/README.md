@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/kreiseck-at/id-austria-connect/main/assets/kreiseck_logo.png" alt="Kreiseck" width="280">
+
 # @kreiseck/id-austria
 
 **Login mit ID Austria (OpenID Connect) für Node.** Framework-agnostischer
