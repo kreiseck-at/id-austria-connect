@@ -6,7 +6,7 @@ Wiederverwendbare Anbindung an **ID Austria** (OpenID Connect) für eigene
 Projekte — Login mit ID Austria einmal sauber kapseln und in mehreren
 Anwendungen mit minimalem projektspezifischem Aufwand einsetzen.
 
-Von **[Kreiseck](https://github.com/kreiseck-at)** · Lizenz: MIT.
+Von **[Kreiseck](https://github.com/kreiseck-at)** · Lizenz: Apache-2.0.
 
 Architektur: dünner Client, dicker Server. `@kreiseck/id-austria`
 (`packages/node`) ist der framework-agnostische Server-Kern — hält das
@@ -73,4 +73,4 @@ Paket-Konfiguration):** [`packages/node/REGISTRIERUNG.md`](packages/node/REGISTR
 
 ## Lizenz
 
-MIT © Kreiseck — siehe [`LICENSE`](LICENSE).
+Apache-2.0 © Kreiseck — siehe [`LICENSE`](LICENSE) und [`NOTICE`](NOTICE).

@@ -1,8 +1,8 @@
 {
   "name": "@kreiseck/id-austria",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ID Austria (OpenID Connect) Login fuer Node — Drittanbieter-Client",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "Kreiseck",
   "homepage": "https://github.com/kreiseck-at/id-austria-connect#readme",
   "repository": {
@@ -30,7 +30,8 @@
   "engines": { "node": ">=20" },
   "files": [
     "src",
-    "REGISTRIERUNG.md"
+    "REGISTRIERUNG.md",
+    "NOTICE"
   ],
   "scripts": {
     "test": "jest",

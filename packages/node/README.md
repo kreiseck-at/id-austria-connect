@@ -7,7 +7,7 @@ Server-Kern: hält das `client_secret`, baut die Authorize-URL, tauscht den Code
 gegen das `id_token`, prüft dessen Signatur und liefert ein normalisiertes Profil.
 Drittanbieter-Client, nicht mit dem Bund affiliiert.
 
-Von **[Kreiseck](https://github.com/kreiseck-at)** · Lizenz: MIT.
+Von **[Kreiseck](https://github.com/kreiseck-at)** · Lizenz: Apache-2.0.
 
 ## Installation
 
@@ -71,4 +71,4 @@ Anwendung). Schritt-für-Schritt-Anleitung inkl. Zuordnung zur Paket-Konfigurati
 
 ## Lizenz
 
-MIT © Kreiseck
+Apache-2.0 © Kreiseck
