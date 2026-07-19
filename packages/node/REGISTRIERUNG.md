@@ -139,14 +139,14 @@ Option **OIDC** wählen (nicht SAML).
 > Signaturzertifikat(e) als PEM, optionales Verschlüsselungszertifikat und die
 > SP-Endpunkte mit HTTP-POST-Methode; Metadaten können per XML importiert werden.)
 
-Das **Client Secret** wird bei der Registrierung erzeugt (OIDC verlangt zwingend
-`client_secret`, Auth-Methode `client_secret_post`) → entspricht `clientSecret` in der
-Paket-Konfiguration. **Niemals ins Frontend/den Client — nur ins serverseitige Secret
-Management.**
+Das **Client Secret** wird **nicht** automatisch erzeugt — du musst es **vor dem
+Aktivieren** explizit anlegen (siehe Schritt 3, Punkt 6). Es entspricht `clientSecret` in
+der Paket-Konfiguration (OIDC-Auth-Methode `client_secret_post`). **Niemals ins
+Frontend/den Client — nur ins serverseitige Secret Management.**
 
 ---
 
-## Schritt 3 — Prüfen, beantragen, aktivieren
+## Schritt 3 — Prüfen, beantragen, OIDC-Secret erstellen, aktivieren
 
 1. **Speichern.**
 2. Button **„Prüfen"** → das System prüft die Angaben (Pflichtfelder, Fehlerhinweise).
@@ -158,7 +158,16 @@ Management.**
      zu melden).
 5. **REF:** Der Antrag wird **stündlich automatisch genehmigt**. **Echtsystem:** manuelle
    Prüfung durch die Behörde.
-6. Nach erfolgter Akkreditierung den SP/die Version **aktivieren**. Fertig.
+6. **OIDC Client Secret erstellen — Pflicht vor dem Aktivieren, leicht zu übersehen!**
+   Ohne Secret bricht das Aktivieren mit „Fehler beim Aktivieren — Bitte erstellen Sie vor
+   dem Aktivieren ein OIDC Client Secret" ab. Auf **Service-Provider-Ebene** (nicht in der
+   Version) findet sich neben den Buttons „Neue Version anlegen" und „Service Provider
+   löschen" der kleine, unscheinbare Button **„OIDC Secret neu erstellen"**. Klicken →
+   Dialog „OIDC Client Secret neu erstellen" bestätigen. **Das Secret wird nur EINMALIG
+   angezeigt — sofort kopieren** und als `clientSecret` bzw. `IDA_CLIENT_SECRET`
+   hinterlegen. Die Änderung kann **bis zu 30 Minuten** wirksam werden.
+7. Nach erfolgter Akkreditierung **und** vorhandenem OIDC-Secret den SP/die Version
+   **aktivieren**. Fertig.
 
 ---
 
@@ -167,7 +176,7 @@ Management.**
 | USP-Feld | Paket-Config (`createIdAustria`) | Anmerkung |
 |---|---|---|
 | Unique ID (OIDC Client ID) | `clientId` | exakt übernehmen; = `aud` im `id_token` |
-| Client Secret (bei Registrierung erzeugt) | `clientSecret` | nur serverseitig, Secret Manager |
+| Client Secret (Button „OIDC Secret neu erstellen") | `clientSecret` | einmalig angezeigt; nur serverseitig, Secret Manager |
 | Weiterleitungsadresse | `redirectUri` | exakt, keine Wildcards, muss im Request identisch sein |
 | Umgebung (IDA vs. IDA REF) | `environment` | `production` bzw. `test` |
 | Angeforderte Attribute | (— serverseitig geliefert) | erscheinen als Claims im `id_token`, siehe `profile.js` |
@@ -216,8 +225,10 @@ Authentifizierung in **REF**: „Testidentitäten Unterstützung" aktivieren.
 6. [ ] Testidentitäten aktivieren (REF); Requested Claims & Verschlüsselung AUS.
 7. [ ] Technische Metadaten: OIDC, Redirect-URI(s) exakt eintragen.
 8. [ ] Speichern → Prüfen → Akkreditierung beantragen → 2 Checkboxen → (REF: stündlich
-       auto-genehmigt) → aktivieren.
-9. [ ] `clientId`/`clientSecret`/`redirectUri` ins Secret Management des Projekts, `ida`
+       auto-genehmigt).
+9. [ ] **Vor dem Aktivieren:** auf SP-Ebene Button „OIDC Secret neu erstellen" → Secret
+       **einmalig** anzeigen/kopieren (bis zu 30 Min. wirksam), dann **aktivieren**.
+10. [ ] `clientId`/`clientSecret`/`redirectUri` ins Secret Management des Projekts, `ida`
        mit `environment: 'test'` verdrahten, Login end-to-end testen.
-10. [ ] Erst wenn REF läuft: SP im **Echtsystem** anlegen/akkreditieren,
+11. [ ] Erst wenn REF läuft: SP im **Echtsystem** anlegen/akkreditieren,
         `environment: 'production'`, Live-Redirect-URI eintragen.
