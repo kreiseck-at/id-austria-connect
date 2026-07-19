@@ -33,11 +33,13 @@ Deploy-Setup — dieses Beispiel liest sie einfach aus `process.env`.
 ## Ablauf
 
 1. `idaLogin` ruft `ida.buildAuthorizeUrl()`, legt `{ nonce, codeVerifier,
-   expiresAt }` unter `ida_sessions/{state}` in Firestore ab und leitet den
-   Browser zur ID-Austria-Authorize-URL weiter.
-2. `idaCallback` liest das Session-Dokument über den zurückgegebenen
-   `state`, ruft `ida.handleCallback({ code, state, expectedState: state,
-   nonce, codeVerifier, error })`, löscht das Dokument danach und gibt das
+   expiresAt }` unter `ida_sessions/{state}` in Firestore ab, setzt zusätzlich
+   ein HttpOnly-Cookie `ida_state` mit dem `state` und leitet den Browser zur
+   ID-Austria-Authorize-URL weiter.
+2. `idaCallback` liest das Session-Dokument über den `state` aus der Query,
+   ruft `ida.handleCallback({ code, state, expectedState, nonce,
+   codeVerifier, error })` — wobei `expectedState` aus dem `ida_state`-Cookie
+   stammt, nicht aus der Query —, löscht das Dokument danach und gibt das
    normalisierte Profil zurück (`bpk`, `firstName`, `lastName`, …).
    Fehlt das Session-Dokument (state unbekannt oder bereits verbraucht),
    antwortet der Endpoint mit HTTP 400.
@@ -45,6 +47,23 @@ Deploy-Setup — dieses Beispiel liest sie einfach aus `process.env`.
 Ab dem Profil ist alles Weitere projektspezifisch: eigenen Nutzer über
 `profile.bpk` finden/anlegen, eigene Session-/Login-Mechanik ausstellen.
 Das Beispiel gibt das Profil zur Demonstration nur als JSON zurück.
+
+## CSRF-Schutz: state per Cookie an die Browser-Session gebunden
+
+`ida.handleCallback` prüft intern `state !== expectedState` — dieser Vergleich
+ist nur dann eine echte Sicherheitsprüfung, wenn `expectedState` aus etwas
+stammt, das ein Angreifer nicht selbst setzen kann. Würde `expectedState`
+ebenfalls aus der Callback-Query gelesen, wären beide Werte immer identisch
+(der Angreifer liefert ja beide), und der Check liefe leer — ein Angreifer
+könnte einem Opfer per präpariertem Link einen fremden, aber gültigen `state`
+unterschieben (Login-CSRF) und dessen ID-Austria-Session kapern.
+
+Deshalb setzt `idaLogin` den `state` zusätzlich als HttpOnly-Cookie
+(`ida_state`, `Secure`, `SameSite=Lax`, 10 Minuten gültig), und `idaCallback`
+liest `expectedState` ausschließlich aus diesem Cookie — an genau die
+Browser-Session gebunden, die den Login gestartet hat. Der Firestore-Lookup
+von `nonce`/`codeVerifier` bleibt weiterhin über den `state` aus der Query,
+da nur darüber das passende Session-Dokument auffindbar ist.
 
 ## Firestore: TTL auf `ida_sessions`
 
