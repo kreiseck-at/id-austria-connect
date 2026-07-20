@@ -97,7 +97,9 @@ Felder der Version (\* = Pflicht):
 
 ### Authentifizierung (zwei Checkboxen, beide/einzeln/keine)
 - **Testidentitäten Unterstützung** — erlaubt Anmeldung mit Testidentitäten.
-  **In REF aktivieren**, damit man ohne echte ID Austria testen kann.
+  **In REF UNBEDINGT aktivieren** (und die Version danach neu akkreditieren + aktivieren),
+  sonst schlägt jeder Test-Login mit **Error 9199 „TrustProfileID unbekannt:
+  AuthentisierungsDaten"** fehl — siehe Abschnitt „Häufige Fehler".
 - **eIDAS Unterstützung** — lässt Anmeldungen mit ausländischen elektronischen Identitäten
   zu. Nur aktivieren, wenn das fachlich gewünscht ist.
 
@@ -232,3 +234,32 @@ Authentifizierung in **REF**: „Testidentitäten Unterstützung" aktivieren.
        mit `environment: 'test'` verdrahten, Login end-to-end testen.
 11. [ ] Erst wenn REF läuft: SP im **Echtsystem** anlegen/akkreditieren,
         `environment: 'production'`, Live-Redirect-URI eintragen.
+
+## Häufige Fehler
+
+### Error 9199 — „TrustProfileID unbekannt: AuthentisierungsDaten"
+Vollständige Meldung von ID Austria:
+> Signature verification operation has an internal error. Reason:
+> {at.gv.egovernment.moa.spss.MOAApplicationException: TrustProfileID unbekannt:
+> AuthentisierungsDaten}
+
+**Ursache (häufigster Fall):** In der SP-Version ist **„Testidentitäten Unterstützung"
+nicht aktiviert**, aber der Login wird mit einer **Testidentität** versucht. Der IdP findet
+dann für die Signaturprüfung des Authentisierungs-Blocks kein passendes Trust-Profil
+(intern `…MitTestkarten`) und bricht mit 9199 ab.
+
+**Fix:** In der SP-Version **„Testidentitäten Unterstützung" aktivieren**, dann die Version
+**neu akkreditieren** (REF: stündlich automatisch) und **aktivieren**. Danach funktioniert
+der Test-Login.
+
+**So erkennt man, dass es hier liegt (nicht am eigenen Code):**
+- Der Fehler erscheint als **ID-Austria-eigene Fehlerseite** *nach* der Anmeldung — der
+  eigene `redirect_uri`/Callback wird gar nicht erreicht (im Function-Log kein
+  Callback-Aufruf).
+- Er tritt also **nach** akzeptierter `client_id`/`redirect_uri` auf → an der Anbindung
+  liegt es nicht. `client_id` muss keine erreichbare Seite sein; eine nackte Domain
+  (`https://kasseneck.at`) ist als Client ID völlig in Ordnung.
+
+### Aktivieren schlägt fehl — „Bitte erstellen Sie vor dem Aktivieren ein OIDC Client Secret"
+Vor dem Aktivieren auf **SP-Ebene** den kleinen Button **„OIDC Secret neu erstellen"**
+klicken (siehe Schritt 3, Punkt 6). Das Secret wird nur einmalig angezeigt.
