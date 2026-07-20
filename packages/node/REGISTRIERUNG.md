@@ -285,7 +285,23 @@ Und IDA Basisfunktion (eingeschränkter Funktionsumfang):
 |---|---|---|
 | XXXHildegard XXXÖhlinger | `SP-6121630084` | `rt3cg5ychdq95s` |
 
-Für **mobile** Tests in der ID-Austria-App die Backend-Umgebung auf **„Referenz"**
-umstellen und die Testidentität über den A-Trust-Onboarding-Dienst verknüpfen (Details auf
-der verlinkten Seite). Die konkreten Zugangsdaten können sich ändern — im Zweifel die
-offizielle Liste oben verwenden.
+Die konkreten Zugangsdaten können sich ändern — im Zweifel die offizielle Liste oben
+verwenden.
+
+### Mit der eigenen ID-Austria-App in REF testen (echte Anmeldung)
+Standardmäßig spricht die App die **Produktion** an — eine REF-Signatur schlägt dann fehl
+(im App-Log sichtbar als abgebrochene A-Trust-Signatur). Für echte Anmeldung gegen REF die
+App auf **„Referenz"** umstellen. Offizielle Anleitung:
+<https://www.id-austria.gv.at/de/developer/testen/testen-auf-mobilen-geräten>
+
+1. App öffnen → App-Informationen öffnen.
+2. **10× auf das Versionsfeld tippen** → Entwicklerfunktionen freischalten.
+3. Am Ende der Infoseite die **Backend-Umgebung** auf **„Referenz"** stellen (zurück:
+   „Produktiv").
+4. Eine **Testidentität mit 2-Faktor** im A-Trust-Testidentitäten-Management-Tool anlegen,
+   den erzeugten **QR-Code** in der App scannen und die Verknüpfung (Vergleichswert,
+   Anmeldung, Signatur) abschließen.
+
+Fürs normale Entwickeln braucht man die App nicht — die **Testidentitäten oben
+(Benutzername/Passwort)** genügen. Die App-Umstellung ist nur nötig, wenn man den echten
+2-Faktor-Flow gegen REF testen will.
