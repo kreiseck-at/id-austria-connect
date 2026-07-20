@@ -263,3 +263,29 @@ der Test-Login.
 ### Aktivieren schlägt fehl — „Bitte erstellen Sie vor dem Aktivieren ein OIDC Client Secret"
 Vor dem Aktivieren auf **SP-Ebene** den kleinen Button **„OIDC Secret neu erstellen"**
 klicken (siehe Schritt 3, Punkt 6). Das Secret wird nur einmalig angezeigt.
+
+## Testidentitäten (REF)
+
+Zum Anmelden in REF (Voraussetzung: „Testidentitäten Unterstützung" in der SP-Version
+aktiviert, s. o.). Vollständige, offizielle Liste:
+<https://www.id-austria.gv.at/de/developer/testen/vordefinierte-testidentitäten>
+
+Anmeldung mit **Benutzername + Passwort** (das „XXX" im Namen gehört zur Test-Kennung).
+Ein paar Beispiele (IDA Full Function):
+
+| Name | Benutzername | Passwort |
+|---|---|---|
+| XXXOtto XXXOttakringer | `SP-4444474922` | `8378pc5avg552p` |
+| XXXHildegard XXXÖhlinger | `SP-0103858489` | `18x5xyq91p1gru` |
+| XXXMaria-Theresia … XXXHabsburg-Lothringen | `SP-8212366507` | `4cff7sbb6tbgsc` |
+
+Und IDA Basisfunktion (eingeschränkter Funktionsumfang):
+
+| Name | Benutzername | Passwort |
+|---|---|---|
+| XXXHildegard XXXÖhlinger | `SP-6121630084` | `rt3cg5ychdq95s` |
+
+Für **mobile** Tests in der ID-Austria-App die Backend-Umgebung auf **„Referenz"**
+umstellen und die Testidentität über den A-Trust-Onboarding-Dienst verknüpfen (Details auf
+der verlinkten Seite). Die konkreten Zugangsdaten können sich ändern — im Zweifel die
+offizielle Liste oben verwenden.
